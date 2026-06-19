@@ -51,7 +51,6 @@ export const loader = async ({ request, params }) => {
         }
     );
     const json = await response.json();
-    console.log(JSON.stringify(json, null, 2));
     const product = json?.data?.products?.nodes?.[0];
 
     if (!product) {
@@ -165,7 +164,7 @@ export const action = async ({ request }) => {
                 (image) => image.altText
             )
         );
-    
+    // skips mutation if no data change
     if (removeIds.length === 0 &&
         newUrls.length === 0 &&
         noAltTextChanges &&
@@ -464,6 +463,7 @@ export default function EditProduct() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // loads seo tab only when opened for first time
         if (activeTab === "seo" && !seoLoaded && seoFetcher.state === "idle") {
             setSeoError("");
             try {
@@ -489,7 +489,7 @@ export default function EditProduct() {
         if (saveFetcher.data?.success && saveFetcher.data?.newHandle ) {
             setTimeout(() => {
                 navigate(`/app/products/${saveFetcher.data.newHandle}/edit`);
-            }, 1000);
+            }, 2000);
             
         }
     }, [saveFetcher.data, navigate]);
@@ -626,7 +626,6 @@ export default function EditProduct() {
 
         saveFetcher.submit(
             {
-                // _tab: activeTab,
                 productId: data.product.id,
                 removeIds: JSON.stringify(removeIds),
                 newUrls: JSON.stringify(newUrls),
@@ -688,7 +687,6 @@ export default function EditProduct() {
 
             <h3>Product Details</h3>
             <h4>{data.product.title}</h4>
-            {/* <p style={{color: "#666"}}>Handle: {data.product.handle}</p> */}
             <br/>
             {activeTab === "media" && (
                 <>
