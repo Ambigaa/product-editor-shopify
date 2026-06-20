@@ -14,8 +14,7 @@ function Extension() {
   const [productTitle, setProductTitle] = useState('');
   const [productHandle, setProductHandle] = useState('');
 
-  console.log("navigation: ", navigation);
-  console.log(Object.keys(navigation || {}));
+  
 
   
   // Use direct API calls to fetch data from Shopify.
